@@ -1,0 +1,537 @@
+{
+	"info": {
+		"_postman_id": "0beae699-6e11-4d99-9056-f8ecfd647e1d",
+		"name": "neodev_micro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11453462"
+	},
+	"item": [
+		{
+			"name": "test_api",
+			"item": [
+				{
+					"name": "persons_api",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"name1\",\n    \"gender\": \"male\",\n    \"age\": \"21\",\n    \"identification\": \"1234567890\",\n    \"address\": \"address 1\",\n    \"telephone\": \"1234567890\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/persons",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"persons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"name11\",\n    \"gender\": \"female\",\n    \"age\": \"22\",\n    \"identification\": \"12345678901\",\n    \"address\": \"address 11\",\n    \"telephone\": \"12345678901\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/persons/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"persons",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/persons/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"persons",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/persons/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"persons",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "clients_api",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"clientId\": 1,\n    \"name\": \"name1\",\n    \"gender\": \"male\",\n    \"age\": \"22\",\n    \"identification\": \"1234567890\",\n    \"address\": \"address 2\",\n    \"telephone\": \"1234567890\",\n    \"password\": \"pass001\",\n    \"status\": \"active\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/clients",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getByClientId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/clients/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"namecli0011\",\n    \"gender\": \"male\",\n    \"age\": \"23\",\n    \"identification\": \"12345678901\",\n    \"address\": \"address 11\",\n    \"telephone\": \"12345678901\",\n    \"clientId\": 1,\n    \"password\": \"pass0011\",\n    \"status\": \"active\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/clients/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/clients/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "accounts_api",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"number\": \"ACC0001\",\n    \"type\": \"Ahorros\",\n    \"balance\": \"200.00\",\n    \"status\": \"Activo\",\n    \"client\": {\n        \"clientId\" : 1\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/accounts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createAsync",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"number\": \"ACC0002\",\n    \"type\": \"Corriente\",\n    \"balance\": \"200.00\",\n    \"status\": \"Activo\",\n    \"client\": {\n        \"clientId\" : 1\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/accounts/createAsync",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"accounts",
+										"createAsync"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/accounts/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"accounts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"number\": \"ACC000111\",\n    \"type\": \"Corriente\",\n    \"balance\": 200.00,\n    \"status\": \"Activo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/accounts/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"accounts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/accounts/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"accounts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "transactions_api",
+					"item": [
+						{
+							"name": "create deposit",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"date\": \"2024-05-19T08:40:00Z\",\n    \"type\": \"DEPOSIT\",\n    \"amount\": 150.00,\n    \"balance\": 0,\n    \"account\": {\n        \"id\" : 1\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/transactions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create withdrawal",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"date\": \"2024-05-19T09:40:00Z\",\n    \"type\": \"WITHDRAWAL\",\n    \"amount\": 15.00,\n    \"balance\": 0,\n    \"account\": {\n        \"id\" : 1\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/transactions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/transactions/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"transactions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"date\": \"2024-05-19T08:41:00Z\",\n    \"type\": \"DEPOSIT\",\n    \"amount\": 150.0,\n    \"balance\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/transactions/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"transactions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/transactions/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"transactions",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "reports_api",
+					"item": [
+						{
+							"name": "accountStamentent",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/reports?clientId=1&startDate=2024-05-19T08:40:00Z&endDate=2024-05-19T10:40:00Z",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"reports"
+									],
+									"query": [
+										{
+											"key": "clientId",
+											"value": "1"
+										},
+										{
+											"key": "startDate",
+											"value": "2024-05-19T08:40:00Z"
+										},
+										{
+											"key": "endDate",
+											"value": "2024-05-19T10:40:00Z"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
