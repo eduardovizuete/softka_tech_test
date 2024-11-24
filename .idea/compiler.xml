@@ -8,11 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="micro_person_client" />
+        <module name="micro_account_tx" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="micro_account_tx" options="-parameters" />
       <module name="micro_person_client" options="-parameters" />
     </option>
   </component>

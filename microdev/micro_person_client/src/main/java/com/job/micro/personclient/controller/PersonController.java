@@ -24,7 +24,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/persons")
 @Transactional
-
 public class PersonController {
 
     private PersonService personService;

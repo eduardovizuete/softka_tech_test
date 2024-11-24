@@ -6,12 +6,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(PersonIdNotFoundException.class)
     public ResponseEntity<DetailedErrorResponse> handlePersonIdNotFoundException(PersonIdNotFoundException exception, WebRequest webReq) {
         DetailedErrorResponse detailedErrorResponse = new DetailedErrorResponse(
+                LocalDateTime.now(),
                 webReq.getDescription(false),
                 HttpStatus.NOT_FOUND,
                 exception.getMessage()
@@ -22,6 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PersonIdentAlreadyExistsException.class)
     public ResponseEntity<DetailedErrorResponse> handlePersonIdentAlreadyExistsException(PersonIdentAlreadyExistsException exception, WebRequest webReq) {
         DetailedErrorResponse detailedErrorResponse = new DetailedErrorResponse(
+                LocalDateTime.now(),
                 webReq.getDescription(false),
                 HttpStatus.BAD_REQUEST,
                 exception.getMessage()
@@ -32,6 +36,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClientIdAlreadyExistsException.class)
     public ResponseEntity<DetailedErrorResponse> handleClientByClientIdAlreadyExistsException(ClientIdAlreadyExistsException exception, WebRequest webReq) {
         DetailedErrorResponse detailedErrorResponse = new DetailedErrorResponse(
+                LocalDateTime.now(),
                 webReq.getDescription(false),
                 HttpStatus.BAD_REQUEST,
                 exception.getMessage()
@@ -42,6 +47,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClientIdNotFoundException.class)
     public ResponseEntity<DetailedErrorResponse> handleClientIdNotFoundException(ClientIdNotFoundException exception, WebRequest webReq) {
         DetailedErrorResponse detailedErrorResponse = new DetailedErrorResponse(
+                LocalDateTime.now(),
                 webReq.getDescription(false),
                 HttpStatus.NOT_FOUND,
                 exception.getMessage()

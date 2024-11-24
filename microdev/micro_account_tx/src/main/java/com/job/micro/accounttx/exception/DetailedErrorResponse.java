@@ -1,13 +1,17 @@
-package com.job.micro.personclient.exception;
+package com.job.micro.accounttx.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class DetailedErrorResponse {
 
     private LocalDateTime timestamp;

@@ -18,6 +18,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/microdev/micro_person_client/pom.xml" />
+        <option value="$PROJECT_DIR$/microdev/micro_account_tx/pom.xml" />
       </list>
     </option>
   </component>
