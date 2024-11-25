@@ -10,20 +10,19 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClientIntegrationTest {
+
+public class ClientControllerTest {
 
     // REST API Clients testing the status code of getByClientId
     @Test
     public void givenClientDoesExists_whenClientInfoIsRetrieved_then200IsReceived()
             throws IOException {
-
         // Given
         Long idClient = 1L;
-        //HttpUriRequest request = new HttpGet( "http://localhost:8080/api/clients/" + idClient );
-        HttpUriRequest request = new HttpGet( "http://micropc:8080/api/clients/" + idClient );
+        HttpUriRequest request = new HttpGet("http://localhost:8080/api/clients/" + idClient);
 
         // When
-        HttpResponse httpResponse = HttpClientBuilder.create().build().execute( request );
+        HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
 
         // Then
         assertThat(httpResponse.getCode()).isEqualTo(200);
