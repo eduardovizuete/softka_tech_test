@@ -1,4 +1,5 @@
-CREATE DATABASE `microdev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE `microdev`;
+USE microdev;
 CREATE TABLE `person` (
   `person_id` bigint NOT NULL AUTO_INCREMENT,
   `address` varchar(255) NOT NULL,
@@ -7,8 +8,9 @@ CREATE TABLE `person` (
   `identification` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `telephone` varchar(255) NOT NULL,
-  PRIMARY KEY (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`person_id`),
+  UNIQUE KEY `UK_4r2cs4eybw7joyi0u8v7vywhg` (`identification`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `client` (
   `client_id` bigint NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -26,9 +28,10 @@ CREATE TABLE `account` (
   `type` varchar(255) NOT NULL,
   `client_person_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_dbfiubqahb32ns85k023gr6nn` (`number`),
   KEY `FKsyk402l3qi0m40bxxipa7t5r4` (`client_person_id`),
   CONSTRAINT `FKsyk402l3qi0m40bxxipa7t5r4` FOREIGN KEY (`client_person_id`) REFERENCES `client` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `transaction` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `amount` double DEFAULT NULL,
@@ -40,5 +43,4 @@ CREATE TABLE `transaction` (
   PRIMARY KEY (`id`),
   KEY `FK6g20fcr3bhr6bihgy24rq1r1b` (`account_id`),
   CONSTRAINT `FK6g20fcr3bhr6bihgy24rq1r1b` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

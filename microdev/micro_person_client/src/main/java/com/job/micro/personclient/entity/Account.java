@@ -4,17 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -28,7 +26,7 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String number;
 
     @Column(nullable = false)
@@ -42,11 +40,11 @@ public class Account implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "accounts" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"accounts"}, allowSetters = true)
     private Client client;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
-    @JsonIgnoreProperties(value = { "account" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"account"}, allowSetters = true)
     private Set<Transaction> transactions = new HashSet<>();
 
 }

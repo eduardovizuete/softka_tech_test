@@ -5,16 +5,14 @@ import com.job.micro.personclient.entity.enumeration.TypeTx;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -46,7 +44,7 @@ public class Transaction implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "client", "transactions" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"client", "transactions"}, allowSetters = true)
     private Account account;
 
 }

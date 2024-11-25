@@ -1,4 +1,4 @@
-package com.job.micro.accounttx.entity;
+package com.job.micro.personclient.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -3,17 +3,15 @@ package com.job.micro.accounttx.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -33,7 +31,7 @@ public class Client extends Person implements Serializable {
     private String status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    @JsonIgnoreProperties(value = {"client", "transactions"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "client", "transactions" }, allowSetters = true)
     private Set<Account> accounts = new HashSet<>();
 
 }

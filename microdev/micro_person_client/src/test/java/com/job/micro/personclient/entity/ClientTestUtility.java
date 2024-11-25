@@ -1,10 +1,10 @@
-package com.job.micro.accounttx.entity;
+package com.job.micro.personclient.entity;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClientTest {
+public class ClientTestUtility {
 
     @Test
     void equalsVerifier() throws Exception {
