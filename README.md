@@ -72,7 +72,7 @@ Docker Container docker-compose.yml (service = micropc, service 2 = microat and 
   
 		show databases;  
   
-		use neodev_micro 
+		use microdev 
   
 		show tables;  
   
