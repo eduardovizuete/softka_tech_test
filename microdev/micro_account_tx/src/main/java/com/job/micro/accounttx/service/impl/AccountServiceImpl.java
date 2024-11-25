@@ -38,9 +38,8 @@ public class AccountServiceImpl implements AccountService {
 
         Optional<ClientDTO> client = Optional.ofNullable(
                 webClient.get()
-                        //.uri("http://micropc:8080/api/clients/" + account.getClient().getClientId())
-                        .uri("http://localhost:8080/api/clients/"
-                                + account.getClient().getClientId())
+                        .uri("http://micropc:8080/api/clients/" + account.getClient().getClientId())
+                        //.uri("http://localhost:8080/api/clients/" + account.getClient().getClientId())
                         .retrieve()
                         .bodyToMono(ClientDTO.class)
                         .block()
@@ -67,9 +66,8 @@ public class AccountServiceImpl implements AccountService {
 
         // Perform the asynchronous GET call
         Mono<ClientDTO> responseClient = webClient.get()
-                //.uri("http://micropc:8080/api/clients/"
-                .uri("http://localhost:8080/api/clients/"
-                        + account.getClient().getClientId())
+                .uri("http://micropc:8080/api/clients/" + account.getClient().getClientId())
+                //.uri("http://localhost:8080/api/clients/" + account.getClient().getClientId())
                 .retrieve()
                 .bodyToMono(ClientDTO.class);
 
