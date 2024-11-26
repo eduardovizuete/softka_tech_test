@@ -1,13 +1,12 @@
-package com.job.micro.accounttx.controller;
+package com.job.micro.personclient.controller;
 
-import com.job.micro.accounttx.dto.ClientDTO;
-import com.job.micro.accounttx.entity.Client;
+import com.job.micro.personclient.dto.ClientDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-public class IntegrationAPITest {
+public class IntegrationLiveAPITest {
 
     WebTestClient webClient = WebTestClient.bindToServer()
             .baseUrl("http://localhost:8080")
