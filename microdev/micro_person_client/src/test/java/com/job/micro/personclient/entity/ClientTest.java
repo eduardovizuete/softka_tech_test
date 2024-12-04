@@ -35,7 +35,7 @@ public class ClientTest {
     }
 
     @Test
-    void testEntityAnnotations() {
+    void testEntityPersist() {
         // Create a new Client entity
         Client client = new Client();
         client.setClientId(1L);

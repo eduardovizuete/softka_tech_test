@@ -5,6 +5,7 @@ import com.job.micro.personclient.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,9 @@ public class ClientController {
     // build create client REST API
     // http://localhost:8080/api/clients/
     @PostMapping
-    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<ClientDTO> createClient(
+            @RequestBody @Valid ClientDTO clientDTO,
+            UriComponentsBuilder uriComponentsBuilder) {
         ClientDTO savedClient = clientService.createClient(clientDTO);
 
         URI locationURI = uriComponentsBuilder
@@ -97,7 +100,7 @@ public class ClientController {
     @PutMapping("{id}")
     // http://localhost:8080/api/clients/1
     public ResponseEntity<ClientDTO> updateClient(@PathVariable("id") Long clientId,
-                                               @RequestBody ClientDTO clientDTO) {
+                                                  @RequestBody @Valid ClientDTO clientDTO) {
         ClientDTO updatedClient = clientService.updateClient(clientId, clientDTO);
         return new ResponseEntity<>(updatedClient, HttpStatus.OK);
     }
