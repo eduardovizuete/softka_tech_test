@@ -1,7 +1,6 @@
 package com.job.micro.accounttx.service;
 
 import com.job.micro.accounttx.dto.TransactionDTO;
-import com.job.micro.accounttx.entity.Transaction;
 
 import java.time.Instant;
 import java.util.List;

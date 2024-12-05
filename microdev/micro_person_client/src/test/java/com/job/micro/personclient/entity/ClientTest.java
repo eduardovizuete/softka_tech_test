@@ -11,28 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoConfiguration
 @DataJpaTest
-public class ClientTest {
+class ClientTest {
 
     @Autowired
     private TestEntityManager entityManager;
-
-    @Test
-    void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Client.class);
-
-        Client client1 = new Client();
-        client1.setClientId(1L);
-        client1.setPassword("pass");
-
-        Client client2 = new Client();
-
-        assertThat(client1).isNotEqualTo(client2);
-
-        client2.setClientId(1L);
-        client2.setPassword("pass");
-
-        assertThat(client1).isEqualTo(client2);
-    }
 
     @Test
     void testEntityPersist() {
@@ -55,6 +37,22 @@ public class ClientTest {
         Client persistedClient = entityManager.find(Client.class, 1L);
         assertEquals(client.getClientId(), persistedClient.getClientId());
         assertEquals(client.getIdentification(), persistedClient.getIdentification());
+    }
+
+    @Test
+    void equalsVerifier() {
+        Client client1 = new Client();
+        client1.setClientId(1L);
+        client1.setPassword("pass");
+
+        Client client2 = new Client();
+
+        assertThat(client1).isNotEqualTo(client2);
+
+        client2.setClientId(1L);
+        client2.setPassword("pass");
+
+        assertThat(client1).isEqualTo(client2);
     }
 
 }

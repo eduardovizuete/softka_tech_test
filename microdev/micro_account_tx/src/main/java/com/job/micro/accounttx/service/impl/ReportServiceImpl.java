@@ -18,6 +18,8 @@ import java.util.*;
 @AllArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
+    public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
+
     private AccountRepository accountRepository;
     private TransactionRepository transactionRepository;
 
@@ -27,7 +29,7 @@ public class ReportServiceImpl implements ReportService {
 
         Account account = accountRepository
                 .findById(accountId)
-                .orElseThrow(() -> new AccountIdNotFoundException("Account id not found in db! : " + accountId));
+                .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + accountId));
 
         List<Transaction> txsByAccountIdByRangeDates = transactionRepository.findAllByAccountIdAndDateBetween(
                 account.getId(), startDate, endDate);
@@ -36,12 +38,6 @@ public class ReportServiceImpl implements ReportService {
             ClientAccTxReportDTO reportDto = getClientAccTxReportDTO(account, tx, account.getClient());
             transactions.add(reportDto);
         }
-
-//        txsByAccountIdByRangeDates
-//                .stream()
-//                .map(
-//                        tx -> getClientAccTxReportDTO(account, tx, client))
-//                .forEachOrdered(transactions::add);
 
         return transactions;
     }

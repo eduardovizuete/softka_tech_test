@@ -13,7 +13,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -70,14 +69,14 @@ public class GlobalExceptionHandler {
                 .getAllErrors()
                 .stream()
                 .map(this::mapError)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private ValidationError mapError(ObjectError objectError) {
-        if (objectError instanceof FieldError) {
+        if (objectError instanceof FieldError field) {
             return new ValidationError(
-                    ((FieldError) objectError).getField(),
-                    objectError.getDefaultMessage()
+                    field.getField(),
+                    field.getDefaultMessage()
             );
         }
         return new ValidationError(objectError.getObjectName(), objectError.getDefaultMessage());

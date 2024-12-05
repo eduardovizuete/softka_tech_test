@@ -23,6 +23,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+    public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
+    public static final String CLIENT_ID_NOT_FOUND_IN_DB = "Client id not found in db! : ";
+
     private AccountRepository accountRepository;
     private WebClient webClient;
     private ModelMapper modelMapper;
@@ -46,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
         );
 
         if (client.isEmpty()) {
-            throw new ClientIdNotFoundException("Client id not found in db! : " + account.getClient().getClientId());
+            throw new ClientIdNotFoundException(CLIENT_ID_NOT_FOUND_IN_DB + account.getClient().getClientId());
         } else {
             account.setClient(modelMapper.map(client.get(), Client.class));
         }
@@ -89,7 +92,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO getAccountById(Long accountId) {
         Account account = accountRepository
                 .findById(accountId)
-                .orElseThrow(() -> new AccountIdNotFoundException("Account id not found in db! : " + accountId));
+                .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + accountId));
         return modelMapper.map(account, AccountDTO.class);
     }
 
@@ -99,7 +102,7 @@ public class AccountServiceImpl implements AccountService {
 
         Account existingAccount = accountRepository
                 .findById(accountId)
-                .orElseThrow(() -> new AccountIdNotFoundException("Account id not found in db! : " + accountId));
+                .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + accountId));
 
         existingAccount.setNumber(account.getNumber());
         existingAccount.setType(account.getType());
@@ -114,7 +117,7 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(Long accountId) {
         Account account = accountRepository
                 .findById(accountId)
-                .orElseThrow(() -> new AccountIdNotFoundException("Account id not found in db! : " + accountId));
+                .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + accountId));
         accountRepository.deleteById(account.getId());
     }
 

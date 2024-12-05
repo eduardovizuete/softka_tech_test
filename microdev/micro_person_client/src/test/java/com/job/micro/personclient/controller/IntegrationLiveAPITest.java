@@ -6,9 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-public class IntegrationLiveAPITest {
+class IntegrationLiveAPITest {
 
-    WebTestClient webClient = WebTestClient.bindToServer()
+    final WebTestClient webClient = WebTestClient.bindToServer()
             .baseUrl("http://localhost:8080")
             .build();
 

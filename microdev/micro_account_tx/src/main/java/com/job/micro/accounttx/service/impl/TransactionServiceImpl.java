@@ -3,6 +3,7 @@ package com.job.micro.accounttx.service.impl;
 import com.job.micro.accounttx.dto.TransactionDTO;
 import com.job.micro.accounttx.entity.Account;
 import com.job.micro.accounttx.entity.Transaction;
+import com.job.micro.accounttx.entity.enumeration.TypeTx;
 import com.job.micro.accounttx.exception.AccountIdNotFoundException;
 import com.job.micro.accounttx.exception.TransactionIdNotFoundException;
 import com.job.micro.accounttx.exception.UnavailableBalanceException;
@@ -16,10 +17,15 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
+
+    public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
+    public static final String TRANSACTION_ID_NOT_FOUND_IN_DB = "Transaction id not found in db! : ";
+    public static final String BALANCE_UNAVAILABLE = "Balance unavailable";
 
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
@@ -31,20 +37,19 @@ public class TransactionServiceImpl implements TransactionService {
 
         Account account = accountRepository
                 .findById(transactionDTO.getAccountId())
-                .orElseThrow(() -> new AccountIdNotFoundException("Account id not found in db! : " + transactionDTO.getAccountId()));
+                .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + transactionDTO.getAccountId()));
 
         transaction.setAccount(account);
         transaction.setBalanceBeforeTx(account.getBalance());
 
-        switch (transaction.getType()) {
-            case DEPOSIT -> transaction.setBalance(account.getBalance() + transaction.getAmount());
-            case WITHDRAWAL -> {
-                if (transaction.getAmount() > account.getBalance()) {
-                    throw new UnavailableBalanceException("Balance unavailable");
-                }
-
-                transaction.setBalance(account.getBalance() - transaction.getAmount());
+        if (Objects.requireNonNull(transaction.getType()) == TypeTx.DEPOSIT) {
+            transaction.setBalance(account.getBalance() + transaction.getAmount());
+        } else if (transaction.getType() == TypeTx.WITHDRAWAL) {
+            if (transaction.getAmount() > account.getBalance()) {
+                throw new UnavailableBalanceException(BALANCE_UNAVAILABLE);
             }
+
+            transaction.setBalance(account.getBalance() - transaction.getAmount());
         }
 
         account.setBalance(transaction.getBalance());
@@ -65,7 +70,7 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDTO getTxById(Long transactionId) {
         Transaction transaction = transactionRepository
                 .findById(transactionId)
-                .orElseThrow(() -> new TransactionIdNotFoundException("Transaction id not found in db! : " + transactionId));
+                .orElseThrow(() -> new TransactionIdNotFoundException(TRANSACTION_ID_NOT_FOUND_IN_DB + transactionId));
         return modelMapper.map(transaction, TransactionDTO.class);
     }
 
@@ -91,7 +96,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction existingTx = transactionRepository
                 .findById(transactionId)
-                .orElseThrow(() -> new TransactionIdNotFoundException("Transaction id not found in db! : " + transactionId));
+                .orElseThrow(() -> new TransactionIdNotFoundException(TRANSACTION_ID_NOT_FOUND_IN_DB + transactionId));
 
         existingTx.setDate(transaction.getDate());
         existingTx.setType(transaction.getType());
@@ -107,7 +112,7 @@ public class TransactionServiceImpl implements TransactionService {
     public void deleteTransaction(Long transactionId) {
         Transaction transaction = transactionRepository
                 .findById(transactionId)
-                .orElseThrow(() -> new TransactionIdNotFoundException("Transaction id not found in db! : " + transactionId));
+                .orElseThrow(() -> new TransactionIdNotFoundException(TRANSACTION_ID_NOT_FOUND_IN_DB + transactionId));
         transactionRepository.deleteById(transaction.getId());
     }
 

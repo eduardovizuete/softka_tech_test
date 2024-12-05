@@ -1,9 +1,9 @@
 package com.job.micro.personclient.controller;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,21 +11,29 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class ClientControllerTest {
+class ClientControllerTest {
 
     // REST API Clients testing the status code of getByClientId
     @Test
-    public void givenClientDoesExists_whenClientInfoIsRetrieved_then200IsReceived()
+    void givenClientDoesExists_whenClientInfoIsRetrieved_then200IsReceived()
             throws IOException {
         // Given
-        Long idClient = 1L;
-        HttpUriRequest request = new HttpGet("http://localhost:8080/api/clients/" + idClient);
+        long idClient = 1L;
+        HttpGet httpget = new HttpGet("http://localhost:8080/api/clients/" + idClient);
 
         // When
-        HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
 
-        // Then
-        assertThat(httpResponse.getCode()).isEqualTo(200);
+            Result result = httpclient.execute(
+                    httpget,
+                    response -> new Result(response.getCode(), EntityUtils.toString(response.getEntity())));
+
+            // Then
+            assertThat(result.status).isEqualTo(200);
+        }
+    }
+
+    record Result(int status, String content) {
     }
 
 }

@@ -5,6 +5,8 @@ import com.job.micro.personclient.entity.Client;
 import com.job.micro.personclient.exception.ClientIdAlreadyExistsException;
 import com.job.micro.personclient.exception.ClientIdNotFoundException;
 import com.job.micro.personclient.exception.PersonIdentAlreadyExistsException;
+import com.job.micro.personclient.i18n.Constants;
+import com.job.micro.personclient.i18n.MessageUtil;
 import com.job.micro.personclient.repository.ClientRepository;
 import com.job.micro.personclient.repository.PersonRepository;
 import com.job.micro.personclient.service.ClientService;
@@ -30,12 +32,14 @@ public class ClientServiceImpl implements ClientService {
 
         if (clientRepository.findByClientId(client.getClientId()).isPresent()) {
             throw new ClientIdAlreadyExistsException(
-                    "Client id already exists in db! : " + client.getClientId());
+                    MessageUtil.getMessage(Constants.CLIENT_ID_ALREADY_EXISTS_IN_DB)
+                            + client.getClientId());
         }
 
         if (personRepository.findByIdentification(client.getIdentification()).isPresent()) {
             throw new PersonIdentAlreadyExistsException(
-                    "Person identification already exists in db! : " + client.getIdentification());
+                    MessageUtil.getMessage(Constants.PERSON_IDENTIFICATION_ALREADY_EXISTS_IN_DB)
+                            + client.getIdentification());
         }
 
         Client savedClient = clientRepository.save(client);
@@ -53,7 +57,8 @@ public class ClientServiceImpl implements ClientService {
     public ClientDTO getClientByClientId(Long clientId) {
         Client client = clientRepository
                 .findByClientId(clientId)
-                .orElseThrow(() -> new ClientIdNotFoundException("Client id not found in db! : " + clientId));
+                .orElseThrow(() -> new ClientIdNotFoundException(
+                        MessageUtil.getMessage(Constants.CLIENT_ID_NOT_FOUND_IN_DB) + clientId));
         return modelMapper.map(client, ClientDTO.class);
     }
 
@@ -61,7 +66,8 @@ public class ClientServiceImpl implements ClientService {
     public ClientDTO updateClient(Long clientId, ClientDTO clientDTO) {
         Client client = clientRepository
                 .findByClientId(clientId)
-                .orElseThrow(() -> new ClientIdNotFoundException("Client id not found in db! : " + clientId));
+                .orElseThrow(() -> new ClientIdNotFoundException(
+                        MessageUtil.getMessage(Constants.CLIENT_ID_NOT_FOUND_IN_DB) + clientId));
         client.setName(clientDTO.getName());
         client.setGender(clientDTO.getGender());
         client.setAge(clientDTO.getAge());
@@ -79,7 +85,8 @@ public class ClientServiceImpl implements ClientService {
     public void deleteByClientId(Long clientId) {
         Client client = clientRepository
                 .findByClientId(clientId)
-                .orElseThrow(() -> new ClientIdNotFoundException("Client id not found in db! : " + clientId));
+                .orElseThrow(() -> new ClientIdNotFoundException(
+                        MessageUtil.getMessage(Constants.CLIENT_ID_NOT_FOUND_IN_DB) + clientId));
         clientRepository.deleteById(client.getId());
     }
 
