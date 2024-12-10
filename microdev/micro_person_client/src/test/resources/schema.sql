@@ -16,24 +16,3 @@ create table `client` (
         `personId` bigint not null,
         primary key (personId)
     );
-
-create table `account` (
-        `id` bigint not null auto_increment,
-        `balance` float(53) not null,
-        `number` varchar(255) not null,
-        `status` varchar(255) not null,
-        `type` varchar(255) not null,
-        `client_personId` bigint not null,
-        primary key (id)
-    );
-
- create table `transaction` (
-        `id` bigint not null auto_increment,
-        `amount` float(53),
-        `balance` float(53),
-        `balanceBeforeTx` float(53),
-        `date` datetime(6),
-        `type` enum ('DEPOSIT','WITHDRAWAL'),
-        `account_id` bigint not null,
-        primary key (id)
-    );

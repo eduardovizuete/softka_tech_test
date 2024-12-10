@@ -8,14 +8,18 @@ import reactor.core.publisher.Mono;
 
 class IntegrationLiveAPITest {
 
+    static final String BASE_URL = "http://localhost:8080";
+    static final String API_CLIENTS = "api/clients/";
+    static final String ID = "478758";
+
     final WebTestClient webClient = WebTestClient.bindToServer()
-            .baseUrl("http://localhost:8080")
+            .baseUrl(BASE_URL)
             .build();
 
     @Test
     void givenRunningService_whenDeleteClientById_thenExpectStatus() {
         webClient.delete()
-                .uri("api/clients/478758")
+                .uri(API_CLIENTS + ID)
                 .exchange()
                 .expectStatus()
                 .isOk();

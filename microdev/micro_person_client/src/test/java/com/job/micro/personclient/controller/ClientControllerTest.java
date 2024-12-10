@@ -13,13 +13,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ClientControllerTest {
 
+    static final String URL_HOST = "http://localhost:8080";
+    static final String API_CLIENTS = "/api/clients/";
+
     // REST API Clients testing the status code of getByClientId
     @Test
     void givenClientDoesExists_whenClientInfoIsRetrieved_then200IsReceived()
             throws IOException {
         // Given
         long idClient = 1L;
-        HttpGet httpget = new HttpGet("http://localhost:8080/api/clients/" + idClient);
+        HttpGet httpget = new HttpGet(URL_HOST + API_CLIENTS + idClient);
 
         // When
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {

@@ -42,17 +42,31 @@ class ClientTest {
     @Test
     void equalsVerifier() {
         Client client1 = new Client();
-        client1.setClientId(1L);
+        client1.setId(1L);
+        client1.setIdentification("4321");
+        client1.setClientId(2L);
         client1.setPassword("pass");
 
         Client client2 = new Client();
 
         assertThat(client1).isNotEqualTo(client2);
 
-        client2.setClientId(1L);
+        Integer hashCode1 = client1.hashCode();
+        Integer hashCode2 = client2.hashCode();
+
+        assertThat(hashCode1).isNotEqualTo(hashCode2);
+
+        client2.setId(1L);
+        client2.setIdentification("4321");
+        client2.setClientId(2L);
         client2.setPassword("pass");
 
         assertThat(client1).isEqualTo(client2);
+
+        hashCode1 = client1.hashCode();
+        hashCode2 = client2.hashCode();
+
+        assertThat(hashCode1).isEqualTo(hashCode2);
     }
 
 }
