@@ -13,12 +13,15 @@ import com.job.micro.personclient.service.ClientService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class ClientServiceImpl implements ClientService {
 
     private ClientRepository clientRepository;
@@ -27,6 +30,7 @@ public class ClientServiceImpl implements ClientService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional()
     public ClientDTO createClient(ClientDTO clientDTO) {
         Client client = modelMapper.map(clientDTO, Client.class);
 
@@ -63,6 +67,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional()
     public ClientDTO updateClient(Long clientId, ClientDTO clientDTO) {
         Client client = clientRepository
                 .findByClientId(clientId)
@@ -82,6 +87,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional()
     public void deleteByClientId(Long clientId) {
         Client client = clientRepository
                 .findByClientId(clientId)

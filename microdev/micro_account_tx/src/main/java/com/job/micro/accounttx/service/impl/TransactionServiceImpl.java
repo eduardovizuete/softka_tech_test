@@ -13,6 +13,8 @@ import com.job.micro.accounttx.service.TransactionService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class TransactionServiceImpl implements TransactionService {
 
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
@@ -32,6 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional()
     public TransactionDTO createTransaction(TransactionDTO transactionDTO) {
         Transaction transaction = modelMapper.map(transactionDTO, Transaction.class);
 
@@ -91,6 +95,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional()
     public TransactionDTO updateTransaction(Long transactionId, TransactionDTO transactionDTO) {
         Transaction transaction = modelMapper.map(transactionDTO, Transaction.class);
 
@@ -109,6 +114,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional()
     public void deleteTransaction(Long transactionId) {
         Transaction transaction = transactionRepository
                 .findById(transactionId)

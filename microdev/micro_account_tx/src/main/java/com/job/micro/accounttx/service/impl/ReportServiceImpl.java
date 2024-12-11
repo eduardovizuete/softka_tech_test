@@ -10,12 +10,15 @@ import com.job.micro.accounttx.repository.TransactionRepository;
 import com.job.micro.accounttx.service.ReportService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class ReportServiceImpl implements ReportService {
 
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
@@ -34,10 +37,11 @@ public class ReportServiceImpl implements ReportService {
         List<Transaction> txsByAccountIdByRangeDates = transactionRepository.findAllByAccountIdAndDateBetween(
                 account.getId(), startDate, endDate);
 
-        for (Transaction tx : txsByAccountIdByRangeDates) {
-            ClientAccTxReportDTO reportDto = getClientAccTxReportDTO(account, tx, account.getClient());
-            transactions.add(reportDto);
-        }
+        txsByAccountIdByRangeDates
+                .stream()
+                .map(
+                        tx -> getClientAccTxReportDTO(account, tx, account.getClient()))
+                .forEachOrdered(transactions::add);
 
         return transactions;
     }

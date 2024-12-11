@@ -12,6 +12,7 @@ import com.job.micro.accounttx.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService {
 
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
@@ -32,6 +34,7 @@ public class AccountServiceImpl implements AccountService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional()
     public AccountDTO createAccount(AccountDTO accountDTO) {
         Account account = modelMapper.map(accountDTO, Account.class);
 
@@ -59,6 +62,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional()
     public Mono<AccountDTO> createAccountAsync(AccountDTO accountDTO) {
         Account account = modelMapper.map(accountDTO, Account.class);
 
@@ -96,6 +100,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional()
     public AccountDTO updateAccount(Long accountId, AccountDTO accountDTO) {
         Account account = modelMapper.map(accountDTO, Account.class);
 
@@ -113,6 +118,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional()
     public void deleteAccount(Long accountId) {
         Account account = accountRepository
                 .findById(accountId)

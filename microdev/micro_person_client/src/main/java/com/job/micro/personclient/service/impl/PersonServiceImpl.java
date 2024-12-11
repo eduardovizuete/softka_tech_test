@@ -11,18 +11,21 @@ import com.job.micro.personclient.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class PersonServiceImpl implements PersonService {
 
     private PersonRepository personRepository;
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional()
     public PersonDTO createPerson(PersonDTO personDTO) {
         Person person = modelMapper.map(personDTO, Person.class);
 
@@ -54,6 +57,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional()
     public PersonDTO updatePerson(Long personId, PersonDTO personDTO) {
         Person person = personRepository
                 .findById(personId)
@@ -72,6 +76,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional()
     public void deletePerson(Long personId) {
         Person person = personRepository
                 .findById(personId)

@@ -5,7 +5,6 @@ import com.job.micro.accounttx.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/reports")
-@Transactional
 public class ReportController {
 
     private ReportService reportService;

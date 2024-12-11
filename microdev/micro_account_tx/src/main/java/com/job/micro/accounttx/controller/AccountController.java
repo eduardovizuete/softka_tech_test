@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -24,7 +23,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/accounts")
-@Transactional
 public class AccountController {
 
     private AccountService accountService;
