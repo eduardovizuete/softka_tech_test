@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,25 +43,19 @@ public class AccountServiceImpl implements AccountService {
                     "Account number already exists in db! : " + account.getNumber());
         }
 
-        Optional<ClientDTO> client = Optional.ofNullable(
-                webClient.get()
-                        .uri(API_CLIENTS + account.getClient().getClientId())
-                        .retrieve()
-                        .onStatus(
-                                HttpStatus.NOT_FOUND::equals,
-                                clientResponse -> Mono.error(
-                                        new ClientIdNotFoundException(
-                                                CLIENT_ID_NOT_FOUND_IN_DB + account.getClient().getClientId()))
-                        )
-                        .bodyToMono(ClientDTO.class)
-                        .block()
-        );
+        ClientDTO clientDTO = webClient.get()
+                .uri(API_CLIENTS + account.getClient().getClientId())
+                .retrieve()
+                .onStatus(
+                        HttpStatus.NOT_FOUND::equals,
+                        clientResponse -> Mono.error(
+                                new ClientIdNotFoundException(
+                                        CLIENT_ID_NOT_FOUND_IN_DB + account.getClient().getClientId()))
+                )
+                .bodyToMono(ClientDTO.class)
+                .block();
 
-        if (client.isEmpty()) {
-            throw new ClientIdNotFoundException(CLIENT_ID_NOT_FOUND_IN_DB + account.getClient().getClientId());
-        } else {
-            account.setClient(modelMapper.map(client.get(), Client.class));
-        }
+        account.setClient(modelMapper.map(clientDTO, Client.class));
 
         Account savedAccount = accountRepository.save(account);
         return modelMapper.map(savedAccount, AccountDTO.class);
