@@ -1,18 +1,20 @@
 package com.job.micro.accounttx.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 @AllArgsConstructor
+
 @Entity
 @Table(name = "account")
 public class Account implements Serializable {
@@ -36,13 +38,19 @@ public class Account implements Serializable {
     @Column(nullable = false)
     private String status;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     @NotNull
-    @JsonIgnoreProperties(value = {"accounts"}, allowSetters = true)
     private Client client;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
-    @JsonIgnoreProperties(value = {"account"}, allowSetters = true)
-    private Set<Transaction> transactions = new HashSet<>();
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "number = " + number + ", " +
+                "type = " + type + ", " +
+                "balance = " + balance + ", " +
+                "status = " + status + ")";
+    }
 
 }

@@ -23,7 +23,7 @@ public class Client extends Person implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "clientId", nullable = false, unique = true)
+    @Column(name = "client_id", nullable = false, unique = true)
     private Long clientId;
 
     @Column(nullable = false)

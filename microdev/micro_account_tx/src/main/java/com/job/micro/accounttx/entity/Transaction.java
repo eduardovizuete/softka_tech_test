@@ -1,18 +1,22 @@
 package com.job.micro.accounttx.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.job.micro.accounttx.entity.enumeration.TypeTx;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 @AllArgsConstructor
+
 @Entity
 @Table(name = "transaction")
 public class Transaction implements Serializable {
@@ -28,21 +32,29 @@ public class Transaction implements Serializable {
     private Instant date;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
     private TypeTx type;
 
-    @Column(name = "amount")
     private Double amount;
 
-    @Column(name = "balanceBeforeTx")
+    @Column(name = "balance_before_tx")
     private Double balanceBeforeTx;
 
-    @Column(name = "balance")
     private Double balance;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     @NotNull
-    @JsonIgnoreProperties(value = {"client", "transactions"}, allowSetters = true)
     private Account account;
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "date = " + date + ", " +
+                "type = " + type + ", " +
+                "amount = " + amount + ", " +
+                "balanceBeforeTx = " + balanceBeforeTx + ", " +
+                "balance = " + balance + ")";
+    }
 
 }

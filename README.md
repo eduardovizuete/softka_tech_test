@@ -58,7 +58,7 @@ Compile microservices
  
 		mvn clean package  
 
-Docker Container docker-compose.yml (service = micropc, service 2 = microat and database = mysqldb)
+Docker Container docker-compose.yml (service 1 = micropc, service 2 = microat and database = mysqldb)
 
 	docker compose up 
  
@@ -68,23 +68,25 @@ Docker Container docker-compose.yml (service = micropc, service 2 = microat and 
  
 	docker exec -it mysqldb bash  
  
-		mysql -u root -p  
-  
-		show databases;  
-  
-		use microdev 
-  
-		show tables;  
-  
-		select * from person; 
-  
-		select * from client; 
-  
-		select * from account;  
-  
-		select * from transaction;  
+		mysql -u root -p
+		show databases;
+		use microdev;
+		show tables;
+		select * from person;
+		select * from client;
+		select * from account;
+		select * from transaction;
+        exit
   
 	docker compose down  
+    
+    view logs
+
+        docker compose logs -f mysqldb
+        docker compose logs -f micropc
+        docker compose logs -f microat
+
+    docker compose down --rmi all
 
 ### Separar en 2 microservicios, agrupando (Cliente, Persona) y (Cuenta, Movimientos) donde se contemple una comunicación asincrónica entre los 2 microservicios
 
@@ -110,9 +112,7 @@ Docker Container docker-compose.yml (service = micropc, service 2 = microat and 
 
 ### script database schema and tables
 	
-    /micro_account_tx/src/main/resources/BaseDatos.sql.sql  
- 
-	/micro_person_client/src/main/resources/BaseDatos.sql.sql
+    /softka_tech_test/microdev/init.sql
 
 ### Proyecto postman para probar REST API
 

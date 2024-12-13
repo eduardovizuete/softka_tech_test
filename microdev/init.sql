@@ -1,4 +1,4 @@
-CREATE DATABASE `microdev`;
+CREATE DATABASE IF NOT EXISTS `microdev`;
 USE microdev;
 CREATE TABLE `person` (
   `person_id` bigint NOT NULL AUTO_INCREMENT,
@@ -26,11 +26,11 @@ CREATE TABLE `account` (
   `number` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
-  `client_person_id` bigint NOT NULL,
+  `client_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_dbfiubqahb32ns85k023gr6nn` (`number`),
-  KEY `FKsyk402l3qi0m40bxxipa7t5r4` (`client_person_id`),
-  CONSTRAINT `FKsyk402l3qi0m40bxxipa7t5r4` FOREIGN KEY (`client_person_id`) REFERENCES `client` (`person_id`)
+  KEY `FKkm8yb63h4ownvnlrbwnadntyn` (`client_id`),
+  CONSTRAINT `FKkm8yb63h4ownvnlrbwnadntyn` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `transaction` (
   `id` bigint NOT NULL AUTO_INCREMENT,

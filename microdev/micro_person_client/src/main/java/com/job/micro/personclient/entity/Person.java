@@ -24,7 +24,7 @@ public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "personId")
+    @Column(name = "person_id")
     private Long id;
 
     @Column(nullable = false)

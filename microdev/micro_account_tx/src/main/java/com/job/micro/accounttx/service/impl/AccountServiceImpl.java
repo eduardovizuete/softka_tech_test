@@ -11,6 +11,7 @@ import com.job.micro.accounttx.repository.AccountRepository;
 import com.job.micro.accounttx.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -47,6 +48,12 @@ public class AccountServiceImpl implements AccountService {
                 webClient.get()
                         .uri(API_CLIENTS + account.getClient().getClientId())
                         .retrieve()
+                        .onStatus(
+                                HttpStatus.NOT_FOUND::equals,
+                                clientResponse -> Mono.error(
+                                        new ClientIdNotFoundException(
+                                                CLIENT_ID_NOT_FOUND_IN_DB + account.getClient().getClientId()))
+                        )
                         .bodyToMono(ClientDTO.class)
                         .block()
         );
@@ -75,6 +82,12 @@ public class AccountServiceImpl implements AccountService {
         Mono<ClientDTO> responseClient = webClient.get()
                 .uri(API_CLIENTS + account.getClient().getClientId())
                 .retrieve()
+                .onStatus(
+                        HttpStatus.NOT_FOUND::equals,
+                        clientResponse -> Mono.error(
+                                new ClientIdNotFoundException(
+                                        CLIENT_ID_NOT_FOUND_IN_DB + account.getClient().getClientId()))
+                )
                 .bodyToMono(ClientDTO.class);
 
         return responseClient.map(respAsyncClient -> {
