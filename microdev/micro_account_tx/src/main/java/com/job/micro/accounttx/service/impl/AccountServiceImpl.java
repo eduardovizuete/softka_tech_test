@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
 
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
     public static final String CLIENT_ID_NOT_FOUND_IN_DB = "Client id not found in db! : ";
-    private static final String API_CLIENTS = "http://micropc:8080/api/clients/";
+    private static final String API_CLIENTS = "/api/clients/";
 
     private AccountRepository accountRepository;
     private WebClient webClient;
@@ -43,7 +43,8 @@ public class AccountServiceImpl implements AccountService {
                     "Account number already exists in db! : " + account.getNumber());
         }
 
-        ClientDTO clientDTO = webClient.get()
+        ClientDTO clientDTO = webClient
+                .get()
                 .uri(API_CLIENTS + account.getClient().getClientId())
                 .retrieve()
                 .onStatus(
@@ -72,7 +73,8 @@ public class AccountServiceImpl implements AccountService {
         }
 
         // Perform the asynchronous GET call
-        Mono<ClientDTO> responseClient = webClient.get()
+        Mono<ClientDTO> responseClient = webClient
+                .get()
                 .uri(API_CLIENTS + account.getClient().getClientId())
                 .retrieve()
                 .onStatus(
