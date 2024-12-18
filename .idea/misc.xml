@@ -23,6 +23,7 @@
         <option value="$PROJECT_DIR$/microdev/micro_person_client/pom.xml" />
         <option value="$PROJECT_DIR$/microdev/micro_account_tx/pom.xml" />
         <option value="$PROJECT_DIR$/microdev/service-registry/pom.xml" />
+        <option value="$PROJECT_DIR$/microdev/api-gateway/pom.xml" />
       </list>
     </option>
   </component>
