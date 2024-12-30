@@ -93,7 +93,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountDTO> getAllAccounts() {
         return Arrays.asList(
-                modelMapper.map(accountRepository.findAll(), AccountDTO[].class)
+                modelMapper.map(accountRepository.findAllAccountJoinClient(), AccountDTO[].class)
         );
     }
 
