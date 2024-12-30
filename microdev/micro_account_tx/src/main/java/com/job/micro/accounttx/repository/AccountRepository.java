@@ -18,4 +18,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("select a from Account a left join fetch a.client")
     List<Account> findAllAccountJoinClient();
 
+    @Query("select a from Account a join fetch a.client where a.client.clientId = ?1")
+    List<Account> findAllAccountsByClientId(Long clientId);
+
 }

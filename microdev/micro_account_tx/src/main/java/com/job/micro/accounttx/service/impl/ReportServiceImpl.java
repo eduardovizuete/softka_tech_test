@@ -2,9 +2,7 @@ package com.job.micro.accounttx.service.impl;
 
 import com.job.micro.accounttx.dto.ClientAccTxReportDTO;
 import com.job.micro.accounttx.entity.Account;
-import com.job.micro.accounttx.entity.Client;
 import com.job.micro.accounttx.entity.Transaction;
-import com.job.micro.accounttx.exception.AccountIdNotFoundException;
 import com.job.micro.accounttx.repository.AccountRepository;
 import com.job.micro.accounttx.repository.TransactionRepository;
 import com.job.micro.accounttx.service.ReportService;
@@ -21,39 +19,36 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ReportServiceImpl implements ReportService {
 
-    public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
-
     private AccountRepository accountRepository;
     private TransactionRepository transactionRepository;
 
     @Override
-    public List<ClientAccTxReportDTO> txByClientAndDate(Long accountId, Instant startDate, Instant endDate) {
+    public List<ClientAccTxReportDTO> txByClientAndDate(Long clientId, Instant startDate, Instant endDate) {
         List<ClientAccTxReportDTO> transactions = new ArrayList<>();
 
-        Account account = accountRepository
-                .findById(accountId)
-                .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + accountId));
+        List<Account> accounts = accountRepository.findAllAccountsByClientId(clientId);
 
-        List<Transaction> txsByAccountIdByRangeDates = transactionRepository.findAllByAccountIdAndDateBetween(
-                account.getId(), startDate, endDate);
+        accounts.forEach(account -> {
+            List<Transaction> txsByAccountIdByRangeDates = transactionRepository.findAllByAccountIdAndDateBetween(
+                    account.getId(), startDate, endDate);
 
-        txsByAccountIdByRangeDates
-                .stream()
-                .map(
-                        tx -> getClientAccTxReportDTO(account, tx, account.getClient()))
-                .forEachOrdered(transactions::add);
+            txsByAccountIdByRangeDates
+                    .stream()
+                    .map(this::getClientAccTxReportDTO)
+                    .forEachOrdered(transactions::add);
+        });
 
         return transactions;
     }
 
-    private static ClientAccTxReportDTO getClientAccTxReportDTO(Account account, Transaction tx, Client client) {
+    private ClientAccTxReportDTO getClientAccTxReportDTO(Transaction tx) {
         ClientAccTxReportDTO reportDto = new ClientAccTxReportDTO();
         reportDto.setDate(tx.getDate());
-        reportDto.setName(client.getName());
-        reportDto.setNumberAcc(account.getNumber());
-        reportDto.setTypeAcc(account.getType());
+        reportDto.setName(tx.getAccount().getClient().getName());
+        reportDto.setNumberAcc(tx.getAccount().getNumber());
+        reportDto.setTypeAcc(tx.getAccount().getType());
         reportDto.setBalanceBeforeTx(tx.getBalanceBeforeTx());
-        reportDto.setStatus(account.getStatus());
+        reportDto.setStatus(tx.getAccount().getStatus());
         reportDto.setAmount(tx.getAmount());
         reportDto.setTypeTx(tx.getType());
         reportDto.setBalanceTx(tx.getBalance());

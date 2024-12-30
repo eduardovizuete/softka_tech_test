@@ -12,6 +12,11 @@
       <item index="7" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PutMapping" />
       <item index="8" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RestController" />
     </list>
+    <pattern value="com.job.micro.accounttx.repository.AccountRepository" method="findAllAccountJoinClient" />
+    <pattern value="com.job.micro.personclient.repository.ClientRepository" method="findByClientId" />
+    <pattern value="com.job.micro.personclient.repository.PersonRepository" method="findByIdentification" />
+    <pattern value="com.job.micro.accounttx.repository.TransactionRepository" method="findAllByAccountId" />
+    <pattern value="com.job.micro.personclient.i18n.MessageUtil" method="getMessage" />
     <writeAnnotations>
       <writeAnnotation name="org.springframework.beans.factory.annotation.Autowired" />
     </writeAnnotations>
