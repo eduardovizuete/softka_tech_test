@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,7 +20,7 @@ public class TransactionDTO {
     private Long id;
 
     @Schema(description = "Transaction date")
-    private Instant date;
+    private LocalDateTime date;
 
     @Schema(description = "Transaction type")
     private TypeTx type;

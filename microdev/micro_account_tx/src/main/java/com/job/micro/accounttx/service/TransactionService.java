@@ -2,7 +2,7 @@ package com.job.micro.accounttx.service;
 
 import com.job.micro.accounttx.dto.TransactionDTO;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TransactionService {
@@ -15,7 +15,7 @@ public interface TransactionService {
 
     List<TransactionDTO> getTxByAccountId(Long accountId);
 
-    List<TransactionDTO> getTxByAccountIdAndDateBetween(Long accountId, Instant dateStart, Instant dateEnd);
+    List<TransactionDTO> getTxByAccountIdAndDateBetween(Long accountId, LocalDateTime dateStart, LocalDateTime dateEnd);
 
     TransactionDTO updateTransaction(Long transactionId, TransactionDTO transactionDTO);
 

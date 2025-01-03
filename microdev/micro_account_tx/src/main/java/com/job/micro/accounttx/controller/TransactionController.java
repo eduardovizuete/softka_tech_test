@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Tag(
@@ -115,8 +115,8 @@ public class TransactionController {
     //                                  endDate=2024-11-17T09:42:00Z
     @GetMapping("/search")
     public ResponseEntity<List<TransactionDTO>> getTransactionsByAccountIdAndDateBetween(@RequestParam Long accountId,
-                                                                                      @RequestParam Instant startDate,
-                                                                                      @RequestParam Instant endDate) {
+                                                                                      @RequestParam LocalDateTime startDate,
+                                                                                      @RequestParam LocalDateTime endDate) {
         List<TransactionDTO> transactions = txService.getTxByAccountIdAndDateBetween(accountId, startDate, endDate);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }

@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ReportServiceImpl implements ReportService {
     private TransactionRepository transactionRepository;
 
     @Override
-    public List<ClientAccTxReportDTO> txByClientAndDate(Long clientId, Instant startDate, Instant endDate) {
+    public List<ClientAccTxReportDTO> txByClientAndDate(Long clientId, LocalDateTime startDate, LocalDateTime endDate) {
         List<ClientAccTxReportDTO> transactions = new ArrayList<>();
 
         List<Account> accounts = accountRepository.findAllAccountsByClientId(clientId);

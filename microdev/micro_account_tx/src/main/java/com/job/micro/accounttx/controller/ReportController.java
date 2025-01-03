@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Tag(
@@ -43,8 +43,8 @@ public class ReportController {
     //                                  endDate=2024-05-17T09:42:00Z
     @GetMapping
     public ResponseEntity<List<ClientAccTxReportDTO>> getAccountStatement(@RequestParam Long clientId,
-                                                                          @RequestParam Instant startDate,
-                                                                          @RequestParam Instant endDate) {
+                                                                          @RequestParam LocalDateTime startDate,
+                                                                          @RequestParam LocalDateTime endDate) {
         List<ClientAccTxReportDTO> report = reportService.txByClientAndDate(clientId, startDate, endDate);
         return new ResponseEntity<>(report, HttpStatus.OK);
     }

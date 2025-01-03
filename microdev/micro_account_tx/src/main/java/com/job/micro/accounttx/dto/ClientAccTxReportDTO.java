@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ import java.time.Instant;
 public class ClientAccTxReportDTO {
 
     @Schema(description = "Report date")
-    private Instant date;
+    private LocalDateTime date;
 
     @Schema(description = "Report client name")
     private String name;

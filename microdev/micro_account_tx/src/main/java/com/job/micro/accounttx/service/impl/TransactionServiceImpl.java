@@ -6,19 +6,18 @@ import com.job.micro.accounttx.entity.Transaction;
 import com.job.micro.accounttx.entity.enumeration.TypeTx;
 import com.job.micro.accounttx.exception.AccountIdNotFoundException;
 import com.job.micro.accounttx.exception.TransactionIdNotFoundException;
-import com.job.micro.accounttx.exception.UnavailableBalanceException;
 import com.job.micro.accounttx.repository.AccountRepository;
 import com.job.micro.accounttx.repository.TransactionRepository;
 import com.job.micro.accounttx.service.TransactionService;
+import com.job.micro.accounttx.service.txstrategy.TransactionStContext;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -27,11 +26,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
     public static final String TRANSACTION_ID_NOT_FOUND_IN_DB = "Transaction id not found in db! : ";
-    public static final String BALANCE_UNAVAILABLE = "Balance unavailable";
 
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
     private ModelMapper modelMapper;
+
+    private TransactionStContext transactionStContext;
 
     @Override
     @Transactional()
@@ -42,23 +42,10 @@ public class TransactionServiceImpl implements TransactionService {
                 .findById(transactionDTO.getAccountId())
                 .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + transactionDTO.getAccountId()));
 
-        transaction.setAccount(account);
-        transaction.setBalanceBeforeTx(account.getBalance());
-
-        if (Objects.requireNonNull(transaction.getType()) == TypeTx.DEPOSIT) {
-            transaction.setBalance(account.getBalance() + transaction.getAmount());
-        } else if (transaction.getType() == TypeTx.WITHDRAWAL) {
-            if (transaction.getAmount() > account.getBalance()) {
-                throw new UnavailableBalanceException(BALANCE_UNAVAILABLE);
-            }
-
-            transaction.setBalance(account.getBalance() - transaction.getAmount());
-        }
-
-        account.setBalance(transaction.getBalance());
-        accountRepository.save(account);
+        transactionStContext.executeTx(account, transaction);
 
         Transaction savedTx = transactionRepository.save(transaction);
+        accountRepository.save(account);
         return modelMapper.map(savedTx, TransactionDTO.class);
     }
 
@@ -85,7 +72,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDTO> getTxByAccountIdAndDateBetween(Long accountId, Instant dateStart, Instant dateEnd) {
+    public List<TransactionDTO> getTxByAccountIdAndDateBetween(Long accountId, LocalDateTime dateStart, LocalDateTime dateEnd) {
         return Arrays.asList(
                 modelMapper.map(
                         transactionRepository.findAllByAccountIdAndDateBetween(accountId, dateStart, dateEnd),
@@ -118,7 +105,36 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository
                 .findById(transactionId)
                 .orElseThrow(() -> new TransactionIdNotFoundException(TRANSACTION_ID_NOT_FOUND_IN_DB + transactionId));
-        transactionRepository.deleteById(transaction.getId());
+
+        Account account = transaction.getAccount();
+
+        // Reverse the transaction and update the account balance
+        Transaction trans = transaction.copyTx();
+        transactionStContext.reverseTx(account, trans);
+        accountRepository.save(account);
+
+        // Create and save a new transaction for the reversal
+        Transaction reverseTx = trans.copyTx();
+        reverseTx.setType(getReverseTransactionType(transaction.getType()));
+        transactionRepository.save(reverseTx);
+
+        // Mark the original transaction as deleted
+        transaction.setDeleted(true);
+        transaction.setDeletedAt(LocalDateTime.now());
+        transactionRepository.save(transaction);
+    }
+
+    /**
+     * Returns the reverse transaction type based on the original transaction type.
+     *
+     * @param type the original transaction type
+     * @return the reverse transaction type
+     */
+    private TypeTx getReverseTransactionType(TypeTx type) {
+        return switch (type) {
+            case TypeTx.DEPOSIT -> TypeTx.WITHDRAWAL;
+            case TypeTx.WITHDRAWAL -> TypeTx.DEPOSIT;
+        };
     }
 
 }

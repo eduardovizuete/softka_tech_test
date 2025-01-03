@@ -34,12 +34,14 @@ CREATE TABLE `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `transaction` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `amount` double DEFAULT NULL,
-  `balance` double DEFAULT NULL,
+  `date` datetime(6) NOT NULL,
+  `type` enum('DEPOSIT','WITHDRAWAL') NOT NULL,
+  `amount` double NOT NULL,
   `balance_before_tx` double DEFAULT NULL,
-  `date` datetime(6) DEFAULT NULL,
-  `type` enum('DEPOSIT','WITHDRAWAL') DEFAULT NULL,
+  `balance` double NOT NULL,
   `account_id` bigint NOT NULL,
+  `is_deleted` bit(1) NOT NULL,
+  `deleted_at` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK6g20fcr3bhr6bihgy24rq1r1b` (`account_id`),
   CONSTRAINT `FK6g20fcr3bhr6bihgy24rq1r1b` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
