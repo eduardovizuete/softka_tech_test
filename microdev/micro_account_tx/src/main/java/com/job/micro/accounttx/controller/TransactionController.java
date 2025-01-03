@@ -134,8 +134,9 @@ public class TransactionController {
     @PutMapping("{id}")
     public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable("id") Long transactionId,
                                                          @RequestBody TransactionDTO transactionDTO) {
-        TransactionDTO updatedTransaction = txService.updateTransaction(transactionId, transactionDTO);
-        return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .build();
     }
 
     @Operation(

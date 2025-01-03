@@ -17,8 +17,6 @@ public interface TransactionService {
 
     List<TransactionDTO> getTxByAccountIdAndDateBetween(Long accountId, LocalDateTime dateStart, LocalDateTime dateEnd);
 
-    TransactionDTO updateTransaction(Long transactionId, TransactionDTO transactionDTO);
-
     void deleteTransaction(Long transactionId);
 
 }

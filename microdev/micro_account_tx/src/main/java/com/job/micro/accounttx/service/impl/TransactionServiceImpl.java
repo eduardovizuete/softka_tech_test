@@ -82,25 +82,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional()
-    public TransactionDTO updateTransaction(Long transactionId, TransactionDTO transactionDTO) {
-        Transaction transaction = modelMapper.map(transactionDTO, Transaction.class);
-
-        Transaction existingTx = transactionRepository
-                .findById(transactionId)
-                .orElseThrow(() -> new TransactionIdNotFoundException(TRANSACTION_ID_NOT_FOUND_IN_DB + transactionId));
-
-        existingTx.setDate(transaction.getDate());
-        existingTx.setType(transaction.getType());
-        existingTx.setAmount(transaction.getAmount());
-        existingTx.setBalance(transaction.getBalance());
-
-        Transaction savedTx = transactionRepository.save(existingTx);
-
-        return modelMapper.map(savedTx, TransactionDTO.class);
-    }
-
-    @Override
-    @Transactional()
     public void deleteTransaction(Long transactionId) {
         Transaction transaction = transactionRepository
                 .findById(transactionId)
