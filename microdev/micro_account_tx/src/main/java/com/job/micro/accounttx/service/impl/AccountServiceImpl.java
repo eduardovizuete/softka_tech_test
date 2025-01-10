@@ -9,8 +9,11 @@ import com.job.micro.accounttx.exception.AccountNumberAlreadyExistsException;
 import com.job.micro.accounttx.exception.ClientIdNotFoundException;
 import com.job.micro.accounttx.repository.AccountRepository;
 import com.job.micro.accounttx.service.AccountService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +28,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AccountServiceImpl.class);
+
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
     public static final String CLIENT_ID_NOT_FOUND_IN_DB = "Client id not found in db! : ";
     private static final String API_CLIENTS = "http://micropc:8080/api/clients/";
+    private static final String ACCOUNT_NUMBER_ALREADY_EXISTS_IN_DB = "Account number already exists in db! : ";
+    private static final String ERROR_FETCHING_CLIENT_INFO = "Error fetching client info";
 
     private AccountRepository accountRepository;
     private WebClient webClient;
@@ -37,11 +44,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional()
     public AccountDTO createAccount(AccountDTO accountDTO) {
         Account account = modelMapper.map(accountDTO, Account.class);
-
-        if (accountRepository.findByNumber(account.getNumber()).isPresent()) {
-            throw new AccountNumberAlreadyExistsException(
-                    "Account number already exists in db! : " + account.getNumber());
-        }
+        findAccountByNumber(account);
 
         ClientDTO clientDTO = webClient.get()
                 .uri(API_CLIENTS + account.getClient().getClientId())
@@ -61,15 +64,12 @@ public class AccountServiceImpl implements AccountService {
         return modelMapper.map(savedAccount, AccountDTO.class);
     }
 
+    @CircuitBreaker(name = "createAccountAsyncCircuitBreaker", fallbackMethod = "fallBackFetchClientInfo")
     @Override
     @Transactional()
     public Mono<AccountDTO> createAccountAsync(AccountDTO accountDTO) {
         Account account = modelMapper.map(accountDTO, Account.class);
-
-        if (accountRepository.findByNumber(account.getNumber()).isPresent()) {
-            throw new AccountNumberAlreadyExistsException(
-                    "Account number already exists in db! : " + account.getNumber());
-        }
+        findAccountByNumber(account);
 
         // Perform the asynchronous GET call
         Mono<ClientDTO> responseClient = webClient.get()
@@ -77,7 +77,7 @@ public class AccountServiceImpl implements AccountService {
                 .retrieve()
                 .onStatus(
                         HttpStatus.NOT_FOUND::equals,
-                        clientResponse -> Mono.error(
+                        response -> Mono.error(
                                 new ClientIdNotFoundException(
                                         CLIENT_ID_NOT_FOUND_IN_DB + account.getClient().getClientId()))
                 )
@@ -130,6 +130,18 @@ public class AccountServiceImpl implements AccountService {
                 .findById(accountId)
                 .orElseThrow(() -> new AccountIdNotFoundException(ACCOUNT_ID_NOT_FOUND_IN_DB + accountId));
         accountRepository.deleteById(account.getId());
+    }
+
+    private void findAccountByNumber(Account account) {
+        if (accountRepository.findByNumber(account.getNumber()).isPresent()) {
+            throw new AccountNumberAlreadyExistsException(
+                    ACCOUNT_NUMBER_ALREADY_EXISTS_IN_DB + account.getNumber());
+        }
+    }
+
+    public Mono<AccountDTO> fallBackFetchClientInfo(Exception exception) {
+        LOG.error(ERROR_FETCHING_CLIENT_INFO + " {}", exception.getMessage());
+        return Mono.error(new RuntimeException(ERROR_FETCHING_CLIENT_INFO, exception));
     }
 
 }
