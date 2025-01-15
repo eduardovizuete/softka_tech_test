@@ -10,7 +10,7 @@ class IntegrationLiveAPITest {
 
     static final String BASE_URL = "http://localhost:8080";
     static final String API_CLIENTS = "api/clients/";
-    static final String ID = "478758";
+    static final String ID = "999999";
 
     final WebTestClient webClient = WebTestClient.bindToServer()
             .baseUrl(BASE_URL)
@@ -37,14 +37,14 @@ class IntegrationLiveAPITest {
     @Test
     void givenRunningService_whenCreateClient_thenExpectStatus() {
         ClientDTO client = new ClientDTO();
-        client.setClientId(478758L);
+        client.setClientId(Long.valueOf(ID));
         client.setPassword("1234");
         client.setStatus("Active");
 
-        client.setName("Jose Lema");
+        client.setName("Test Client");
         client.setGender("male");
         client.setAge(25);
-        client.setIdentification("1234567890");
+        client.setIdentification("9999999999");
         client.setAddress("Otavalo sn y principal");
         client.setTelephone("098254785");
 

@@ -21,7 +21,7 @@ class ClientControllerTest {
     void givenClientDoesExists_whenClientInfoIsRetrieved_then200IsReceived()
             throws IOException {
         // Given
-        long idClient = 1L;
+        long idClient = 111L;
         HttpGet httpget = new HttpGet(URL_HOST + API_CLIENTS + idClient);
 
         // When
