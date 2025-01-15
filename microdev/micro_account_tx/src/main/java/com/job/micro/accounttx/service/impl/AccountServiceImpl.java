@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
     public static final String CLIENT_ID_NOT_FOUND_IN_DB = "Client id not found in db! : ";
-    private static final String API_CLIENTS = "http://micropc:8080/api/clients/";
+    private static final String API_CLIENTS = "/api/clients/";
     private static final String ACCOUNT_NUMBER_ALREADY_EXISTS_IN_DB = "Account number already exists in db! : ";
     private static final String ERROR_FETCHING_CLIENT_INFO = "Error fetching client info";
 
@@ -72,7 +72,8 @@ public class AccountServiceImpl implements AccountService {
         findAccountByNumber(account);
 
         // Perform the asynchronous GET call
-        Mono<ClientDTO> responseClient = webClient.get()
+        Mono<ClientDTO> responseClient = webClient
+                .get()
                 .uri(API_CLIENTS + account.getClient().getClientId())
                 .retrieve()
                 .onStatus(

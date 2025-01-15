@@ -10,9 +10,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class ApplicationConfig {
 
+    private static final String BASE_URL_API_GATEWAY = "http://localhost:9191";
+
     @Bean
     public WebClient webClient() {
-        return WebClient.builder().build();
+        return WebClient.builder()
+                .baseUrl(BASE_URL_API_GATEWAY)
+                .build();
     }
 
     @Bean

@@ -7,6 +7,7 @@ import com.job.micro.personclient.exception.ClientIdNotFoundException;
 import com.job.micro.personclient.exception.PersonIdentAlreadyExistsException;
 import com.job.micro.personclient.i18n.Constants;
 import com.job.micro.personclient.i18n.MessageUtil;
+import com.job.micro.personclient.kafka.ClientProducer;
 import com.job.micro.personclient.repository.ClientRepository;
 import com.job.micro.personclient.repository.PersonRepository;
 import com.job.micro.personclient.service.ClientService;
@@ -25,6 +26,7 @@ public class ClientServiceImpl implements ClientService {
 
     private ClientRepository clientRepository;
     private PersonRepository personRepository;
+    private ClientProducer clientProducer;
 
     private ModelMapper modelMapper;
 
@@ -46,6 +48,7 @@ public class ClientServiceImpl implements ClientService {
         }
 
         Client savedClient = clientRepository.save(client);
+        sendClientEvent(savedClient.getClientId().toString());
         return modelMapper.map(savedClient, ClientDTO.class);
     }
 
@@ -93,6 +96,10 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new ClientIdNotFoundException(
                         MessageUtil.getMessage(Constants.CLIENT_ID_NOT_FOUND_IN_DB) + clientId));
         clientRepository.deleteById(client.getId());
+    }
+
+    private void sendClientEvent(String clientId) {
+        clientProducer.sendMessage("Created client id:" + clientId);
     }
 
 }
