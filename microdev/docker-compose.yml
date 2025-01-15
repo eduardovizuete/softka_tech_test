@@ -10,6 +10,7 @@ services:
         ports:
             - "3306:3306"
         environment:
+            TZ: America/Guayaquil
             MYSQL_DATABASE: microdev
             MYSQL_ROOT_PASSWORD: rootroot
             MYSQL_USER: devel_one
