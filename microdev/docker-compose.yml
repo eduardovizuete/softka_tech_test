@@ -20,6 +20,54 @@ services:
             interval: 10s
             timeout: 20s
             retries: 10
+    zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        container_name: zookeeper
+        environment:
+            TZ: America/Guayaquil
+            ZOOKEEPER_SERVER_ID: 1
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+        ports:
+            - "22181:2181"
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        container_name: kafka
+        ports:
+            - "9092:9092"
+        depends_on:
+            - zookeeper
+        environment:
+            TZ: America/Guayaquil
+            KAFKA_BROKER_ID: 1
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    service-registry:
+        container_name: service-registry
+        build:
+            context: service-registry
+            dockerfile: Dockerfile
+        image: service-registry:latest
+        ports:
+            - 8761:8761
+    api-gateway:
+        container_name: api-gateway
+        build:
+            context: api-gateway
+            dockerfile: Dockerfile
+        image: api-gateway:latest
+        ports:
+            - "9191:9191"
+        depends_on:
+            mysqldb:
+                condition: service_healthy
+            service-registry:
+                condition: service_started
     micropc:
         container_name: micropc
         build:
@@ -33,6 +81,10 @@ services:
         depends_on:
             mysqldb:
                 condition: service_healthy
+            service-registry:
+                condition: service_started
+            kafka:
+                condition: service_started
     microat:
         container_name: microat
         build:
@@ -46,3 +98,7 @@ services:
         depends_on:
             mysqldb:
                 condition: service_healthy
+            service-registry:
+                condition: service_started
+            kafka:
+                condition: service_started
