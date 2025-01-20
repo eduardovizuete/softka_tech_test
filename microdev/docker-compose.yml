@@ -55,6 +55,10 @@ services:
         image: service-registry:latest
         ports:
             - 8761:8761
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                    "eureka.instance.hostname":"service-registry"
+                }'
     api-gateway:
         container_name: api-gateway
         build:
@@ -63,6 +67,12 @@ services:
         image: api-gateway:latest
         ports:
             - "9191:9191"
+        env_file:
+            - .env
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                    "eureka.client.serviceUrl.defaultZone":"${EUREKA_HOST}"
+                }'
         depends_on:
             mysqldb:
                 condition: service_healthy
@@ -77,7 +87,10 @@ services:
         ports:
             - "8080:8080"
         environment:
-            - spring.datasource.url=jdbc:mysql://mysqldb:3306/microdev
+            SPRING_APPLICATION_JSON: '{
+                    "spring.datasource.url":"jdbc:mysql://mysqldb:3306/microdev",
+                    "eureka.client.serviceUrl.defaultZone":"${EUREKA_HOST}"
+                }'
         depends_on:
             mysqldb:
                 condition: service_healthy
@@ -94,7 +107,10 @@ services:
         ports:
             - "8081:8081"
         environment:
-            - spring.datasource.url=jdbc:mysql://mysqldb:3306/microdev
+            SPRING_APPLICATION_JSON: '{
+                    "spring.datasource.url":"jdbc:mysql://mysqldb:3306/microdev",
+                    "eureka.client.serviceUrl.defaultZone":"${EUREKA_HOST}"
+                }'
         depends_on:
             mysqldb:
                 condition: service_healthy

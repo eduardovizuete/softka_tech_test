@@ -3,6 +3,7 @@ package com.job.micro.accounttx.config;
 import com.job.micro.accounttx.dto.AccountDTO;
 import com.job.micro.accounttx.entity.Account;
 import org.modelmapper.ModelMapper;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,6 +18,12 @@ public class ApplicationConfig {
         return WebClient.builder()
                 .baseUrl(BASE_URL_API_GATEWAY)
                 .build();
+    }
+
+    @Bean
+    @LoadBalanced
+    public WebClient.Builder loadBalancedWebClientBuilder() {
+        return WebClient.builder();
     }
 
     @Bean

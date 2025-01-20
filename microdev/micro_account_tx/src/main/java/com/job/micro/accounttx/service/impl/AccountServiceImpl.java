@@ -32,12 +32,14 @@ public class AccountServiceImpl implements AccountService {
 
     public static final String ACCOUNT_ID_NOT_FOUND_IN_DB = "Account id not found in db! : ";
     public static final String CLIENT_ID_NOT_FOUND_IN_DB = "Client id not found in db! : ";
+    private static final String URL_REGISTER_MICROPC_SERVICE = "http://micropc-service";
     private static final String API_CLIENTS = "/api/clients/";
     private static final String ACCOUNT_NUMBER_ALREADY_EXISTS_IN_DB = "Account number already exists in db! : ";
     private static final String ERROR_FETCHING_CLIENT_INFO = "Error fetching client info";
 
     private AccountRepository accountRepository;
     private WebClient webClient;
+    private WebClient.Builder loadBalancedWebClient;
     private ModelMapper modelMapper;
 
     @Override
@@ -46,7 +48,8 @@ public class AccountServiceImpl implements AccountService {
         Account account = modelMapper.map(accountDTO, Account.class);
         findAccountByNumber(account);
 
-        ClientDTO clientDTO = webClient.get()
+        ClientDTO clientDTO = webClient
+                .get()
                 .uri(API_CLIENTS + account.getClient().getClientId())
                 .retrieve()
                 .onStatus(
@@ -72,9 +75,10 @@ public class AccountServiceImpl implements AccountService {
         findAccountByNumber(account);
 
         // Perform the asynchronous GET call
-        Mono<ClientDTO> responseClient = webClient
+        Mono<ClientDTO> responseClient = loadBalancedWebClient
+                .build()
                 .get()
-                .uri(API_CLIENTS + account.getClient().getClientId())
+                .uri(URL_REGISTER_MICROPC_SERVICE + API_CLIENTS + account.getClient().getClientId())
                 .retrieve()
                 .onStatus(
                         HttpStatus.NOT_FOUND::equals,
