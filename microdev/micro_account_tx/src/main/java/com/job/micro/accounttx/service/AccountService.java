@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AccountService {
 
-    AccountDTO createAccount(AccountDTO accountDTO);
+    AccountDTO createAccount(AccountDTO accountDTO, String jwtToken);
 
     Mono<AccountDTO> createAccountAsync(AccountDTO accountDTO);
 

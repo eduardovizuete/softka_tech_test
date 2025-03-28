@@ -9,6 +9,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="micro_account_tx" />
+        <module name="security" />
+        <module name="common-utils" />
         <module name="micro_person_client" />
         <module name="service-registry" />
       </profile>
@@ -19,6 +21,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="micro_account_tx" options="-parameters" />
       <module name="micro_person_client" options="-parameters" />
+      <module name="security" options="-parameters" />
       <module name="service-registry" options="-parameters" />
     </option>
   </component>

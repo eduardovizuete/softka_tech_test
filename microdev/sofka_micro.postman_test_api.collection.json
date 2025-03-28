@@ -195,7 +195,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"namecli0022\",\n    \"gender\": \"male\",\n    \"age\": \"25\",\n    \"identification\": \"12345678901\",\n    \"address\": \"address 11\",\n    \"telephone\": \"12345678901\",\n    \"clientId\": 1,\n    \"password\": \"pass0011\",\n    \"status\": \"active\"\n}",
+									"raw": "{\n    \"name\": \"Jose Lema\",\n    \"gender\": \"male\",\n    \"age\": 29,\n    \"identification\": \"1234567890\",\n    \"address\": \"Otavalo sn y principal\",\n    \"telephone\": \"098254785\",\n    \"clientId\": 111,\n    \"password\": \"4321\",\n    \"status\": \"active\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -203,7 +203,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/clients/123",
+									"raw": "http://localhost:8080/api/clients/111",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -212,7 +212,7 @@
 									"path": [
 										"api",
 										"clients",
-										"123"
+										"111"
 									]
 								}
 							},
@@ -224,7 +224,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/clients/123",
+									"raw": "http://localhost:8080/api/clients/444",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -233,7 +233,7 @@
 									"path": [
 										"api",
 										"clients",
-										"123"
+										"444"
 									]
 								}
 							},
@@ -300,7 +300,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"number\": \"585541\",\n    \"type\": \"Corriente\",\n    \"balance\": \"1000.00\",\n    \"status\": \"Activo\",\n    \"clientId\" : 123\n}",
+									"raw": "{\n    \"number\": \"585545\",\n    \"type\": \"Corriente\",\n    \"balance\": \"1000.00\",\n    \"status\": \"Activo\",\n    \"clientId\" : 111\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -351,7 +351,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"number\": \"496821\",\n    \"type\": \"Ahorros\",\n    \"balance\": 540.0,\n    \"status\": \"Activo\"\n}",
+									"raw": "{\n    \"number\": \"478758\",\n    \"type\": \"Ahorros\",\n    \"balance\": 2000.0,\n    \"status\": \"Activo\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -578,7 +578,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8081/api/transactions/search?accountId=1&startDate=2025-01-03T00:00:00&endDate=2025-01-31T00:00:00",
+									"raw": "http://localhost:8081/api/transactions/search?accountId=1&startDate=2025-02-01T00:00:00&endDate=2025-02-28T00:00:00",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -596,11 +596,11 @@
 										},
 										{
 											"key": "startDate",
-											"value": "2025-01-03T00:00:00"
+											"value": "2025-02-01T00:00:00"
 										},
 										{
 											"key": "endDate",
-											"value": "2025-01-31T00:00:00"
+											"value": "2025-02-28T00:00:00"
 										}
 									]
 								}
@@ -669,6 +669,115 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "test_api_cloud",
+			"item": [
+				{
+					"name": "security_auth_api",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"admin123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9000/api/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "api-gateway",
+					"item": [
+						{
+							"name": "persons_api",
+							"item": [
+								{
+									"name": "persons_get_all",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOi8vc2VjdXJpdHk6OTAwMCIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzQxMzY4MTc0LCJyb2xlcyI6W119.Nc7SfFiUDxV1nX20gZReaaoucDwkxntTGP3kAEwq9LohYB_cYBSQDX-7s7k3jL8xNVlqiGKIB3I8HSNVXK5gGPFOZRu1IER5EsyQi_JlFL5QwKR2DVgsJRFdbyWjQgVNIH6qrd0a6zuTWxl8tl9I04QQejD3vt5jifrkEYvqqHnExam42XtBpAevHkDfwdP3tczX_ovFuAZLK7KxHYG5EFt2s6HFG8mMsXb0mHtMMOKZ6xcxnAOY__ON0j4Niys9WmILKS7CNyXIqLNIMS3NXUCP0z8tUSB_L6GZuMH-JjDwSHPDeUU3RV8AgHFW-YE9L756UzcQvY2XmygHlGGqTA",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://localhost:9191/api/persons",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "9191",
+											"path": [
+												"api",
+												"persons"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "oauth_jwks",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:9000/oauth2/jwks",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "9000",
+											"path": [
+												"oauth2",
+												"jwks"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
 		}
 	]
 }

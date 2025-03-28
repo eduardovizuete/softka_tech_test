@@ -54,11 +54,32 @@ services:
             dockerfile: Dockerfile
         image: service-registry:latest
         ports:
-            - 8761:8761
+            - "8761:8761"
         environment:
             SPRING_APPLICATION_JSON: '{
                     "eureka.instance.hostname":"service-registry"
                 }'
+    security:
+        container_name: security
+        build:
+            context: security
+            dockerfile: Dockerfile
+        image: security:latest
+        ports:
+            - "9000:9000"
+        env_file:
+            - .env
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                    "spring.datasource.url":"jdbc:mysql://mysqldb:3306/microdev",
+                    "security.jwt.issuer":"http://security:9000",
+                    "eureka.client.serviceUrl.defaultZone":"${EUREKA_HOST}"
+                }'
+        depends_on:
+            mysqldb:
+                condition: service_healthy
+            service-registry:
+                condition: service_started
     api-gateway:
         container_name: api-gateway
         build:
@@ -71,12 +92,14 @@ services:
             - .env
         environment:
             SPRING_APPLICATION_JSON: '{
-                    "eureka.client.serviceUrl.defaultZone":"${EUREKA_HOST}"
+                    "eureka.client.serviceUrl.defaultZone":"${EUREKA_HOST}",
+                    "spring.security.oauth2.resourceserver.jwt.issuer-uri":"http://security:9000",
+                    "spring.security.oauth2.resourceserver.jwt.jwk-set-uri":"http://security:9000/oauth2/jwks"
                 }'
         depends_on:
-            mysqldb:
-                condition: service_healthy
             service-registry:
+                condition: service_started
+            security:
                 condition: service_started
     micropc:
         container_name: micropc
@@ -86,6 +109,8 @@ services:
         image: micro_person_client:latest
         ports:
             - "8080:8080"
+        env_file:
+            - .env
         environment:
             SPRING_APPLICATION_JSON: '{
                     "spring.datasource.url":"jdbc:mysql://mysqldb:3306/microdev",
@@ -106,6 +131,8 @@ services:
         image: micro_account_tx:latest
         ports:
             - "8081:8081"
+        env_file:
+            - .env
         environment:
             SPRING_APPLICATION_JSON: '{
                     "spring.datasource.url":"jdbc:mysql://mysqldb:3306/microdev",

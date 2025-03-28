@@ -44,13 +44,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional()
-    public AccountDTO createAccount(AccountDTO accountDTO) {
+    public AccountDTO createAccount(AccountDTO accountDTO, String jwtToken) {
         Account account = modelMapper.map(accountDTO, Account.class);
         findAccountByNumber(account);
 
         ClientDTO clientDTO = webClient
                 .get()
                 .uri(API_CLIENTS + account.getClient().getClientId())
+                .header("Authorization", "Bearer " + jwtToken)
                 .retrieve()
                 .onStatus(
                         HttpStatus.NOT_FOUND::equals,

@@ -38,8 +38,12 @@ public class AccountController {
     // build create account REST API
     // http://localhost:8080/api/account/
     @PostMapping
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO, UriComponentsBuilder uriComponentsBuilder) {
-        AccountDTO savedAccount = accountService.createAccount(accountDTO);
+    public ResponseEntity<AccountDTO> createAccount(
+            @RequestBody AccountDTO accountDTO,
+            @RequestHeader("Authorization") String authorizationHeader,
+            UriComponentsBuilder uriComponentsBuilder) {
+        String jwtToken = authorizationHeader.substring("Bearer ".length()); // Extract the token
+        AccountDTO savedAccount = accountService.createAccount(accountDTO, jwtToken);
 
         URI locationURI = uriComponentsBuilder
                 .path("/api/accounts/" + savedAccount.getId())
